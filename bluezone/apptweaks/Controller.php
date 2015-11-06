@@ -569,7 +569,7 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
 
         # Emailing the easy way with IBM Bluemix + the SendGrid Service
         if (isset($_ENV["REDISHOSTNAME"])) {
-            $config->RedisCache['host']=$_ENV["REDISHOST"];
+            $config->RedisCache['host']=$_ENV["REDISHOSTNAME"];
             $config->RedisCache['port']=$_ENV["REDISPORT"];
             $config->RedisCache['timeout']=0.0;
             $config->RedisCache['password']=$_ENV["REDISPASSWORD"];
