@@ -1,0 +1,18 @@
+---
+declared-services:
+  piwikdb:
+    label: cleardb
+    plan: spark
+  sendmail:
+    label: sendgrid
+    plan: free
+
+applications:
+- name: piwikstart
+  memory: 384M 
+  instances: 1
+  path: .
+  stack: cflinuxfs2
+  services:
+  -  piwikdb
+  -  sendmail
