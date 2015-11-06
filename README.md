@@ -11,13 +11,18 @@ Open source projects are awesome. PaaS CloudFoundry enabling of self-hosted open
 
 #### Getting Started  (Pre-requisite: [CF CLI](https://github.com/cloudfoundry/cli/releases "CF CLI"))
 - Click the Deploy Button Above.  Verification Point:  Await success of all 4 steps on the deploy page.
-- Click on the 2nd step (Cloned Repository Successfully).  Click on the Edit Code button in the upper right to establish a git repository for your newly created project.  Then proceed to ```git clone https://hub.jazz.net/git/<your_id>/<app_name>/``` the IBM DevOps repository to your local machine.
+- Click on the 2nd step (Cloned Repository Successfully).  Click on the Edit Code button in the upper right to establish a git repository for your newly created project.  There is a **git** section that should contain your repo url.  Clone the repo ... ```git clone https://hub.jazz.net/git/<your_id>/<app_name>/``` of the IBM DevOps repository to your local machine.
 
 ![Step 1](https://github.com/joshisa/piwikstart/blob/master/bluezone/img/step1.png)
 
 - Browse to the web installation url @ https://replace_me_with_app_name.mybluemix.net/ and complete the 8 step process.
 - {OPTIONAL} At this point, you may choose to login and browse to the administration section of Piwik.  Within the plugins section, you will be able to **activate** or **deactivate** plugins of your choice.  Your choices will be persisted within a generated file named **config.ini.php** that we will need to pull down and persist back into the repository.  As a cloud-enabled 12 factor application, the app's local file storage is ephemeral.  Without persistence, any restart or crash/restart sequence will cause your Piwik application to revert back to the web installer sequence.
-- Within the terminal, browse to the root dir of your local cloned repo and create+run the following executable bash shellscript or you may execute each step manually.
+- Within the terminal, browse to the root dir of your local cloned repo and execute a command similar to:
+```
+cf files <replace_me_with_app_name> /app/fetchConfig.sh | sed -e '1,3d' > fetchConfig.sh
+chmod +x fetchConfig.sh
+```
+- This should pull down a helper fetch script similar to what's shown below.  Your app's name will already be populated :-)
 ```
 #!/bin/bash
 rm ./bluezone/configtweaks/config.ini.php
