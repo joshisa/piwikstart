@@ -19,9 +19,11 @@ Open source projects are awesome. PaaS CloudFoundry enabling of self-hosted open
 - Clone the repo of the IBM DevOps repository to your local machine.  
   ``` git clone https://hub.jazz.net/git/<your_id>/<app_name>/ ``` 
 - Browse to the web installation url @ https://replace_me_with_app_name.mybluemix.net/ and complete the multi-step process.  During the system check phase, it is normal to see a file integrity check warning message.  This is caused by:
+  - movement of composer config files
   - missing .gitignore files
-  - detection of tweaks done to the web installer for cloud enablement
-- {OPTIONAL} At this point, you may choose to login and browse to the administration section of Piwik.  Within the plugins section, you will be able to **activate** or **deactivate** plugins of your choice.  Your choices will be persisted within a generated file named **config.ini.php** that we will need to pull down and persist back into the repository.  As a cloud-enabled 12 factor application, the app's local file storage is ephemeral.  Without persistence, any restart or crash/restart sequence will cause your Piwik application to revert back to the web installer sequence.
+  - detection of web installer tweaks to reduce end user friction
+- {OPTIONAL} At this point, you may choose to login and browse to the administration section of Piwik.  
+  **NOTE**: To encourage better security practices, the deploy is configured to only allow login via **HTTPS**.  Attempting to login via non-SSL will result in a **Form Security failed error**.  Within the plugins section, you will be able to **activate** or **deactivate** plugins of your choice.  Your choices will be persisted within a generated file named **config.ini.php** that we will need to pull down and persist back into the repository.  As a cloud-enabled 12 factor application, the app's local file storage is ephemeral.  Without persistence, any restart or crash/restart sequence will cause your Piwik application to revert back to the web installer sequence.
 - Within the terminal, browse to the root dir of your local cloned repo and execute a command similar to:
 ```
 $ cf files <replace_me_with_app_name> /app/fetchConfig.sh | sed -e '1,3d' > fetchConfig.sh
