@@ -153,9 +153,9 @@ stages:
       IFS='|' read -ra PROJECT_NAME <<< "$IDS_PROJECT_NAME"
       echo -e "  ${Yellow}Generating config helper download script...${no_color}"
       echo -e "#!/bin/bash" > fetchConfig.sh
-      echo -e "rm ./bluezone/config.ini.php" >> fetchConfig.sh
-      echo -e "cf files${PROJECT_NAME[1]} /app/htdocs/piwik/config/config.ini.php > ./bluezone/config.ini.php" >> fetchConfig.sh 
-      echo -e "sed -i -e '1,3d' ./bluezone/config.ini.php" >> fetchConfig.sh
+      echo -e "rm ./bluezone/configtweaks/config.ini.php" >> fetchConfig.sh
+      echo -e "cf files${PROJECT_NAME[1]} /app/htdocs/piwik/config/config.ini.php > ./bluezone/configtweaks/config.ini.php" >> fetchConfig.sh 
+      echo -e "sed -i -e '1,3d' ./bluezone/configtweaks/config.ini.php" >> fetchConfig.sh
       chmod +x fetchConfig.sh
 - name: SameDayDelivery
   inputs:
