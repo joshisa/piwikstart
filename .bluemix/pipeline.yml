@@ -110,8 +110,8 @@ stages:
       
       # Organize the artifact structure to be composer friendly
       echo -e "  ${Yellow}Making artifacts composer install friendly ...${no_color}"
-      cp ./htdocs/piwik/composer.json .
-      cp ./htdocs/piwik/composer.lock .
+      mv ./htdocs/piwik/composer.json .
+      mv ./htdocs/piwik/composer.lock .
       echo -e "  ${Yellow}Patching composer.json paths ...${no_color}"
       jq '.autoload["psr-4"]["Piwik\\\\Plugins\\\\"] = "htdocs/piwik/plugins"  | .autoload["psr-4"]["Piwik\\\\"] = "htdocs/piwik/core"  | .autoload["psr-0"]["Zend_"] = "htdocs/piwik/libs" | .autoload["psr-0"]["HTML_"] = "htdocs/piwik/libs" | .autoload["psr-0"]["PEAR_"] = "htdocs/piwik/libs" | .autoload["psr-0"]["Archive_"] = "htdocs/piwik/libs"' composer.json > tmp.$$.json 
       rm composer.json
