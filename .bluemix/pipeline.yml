@@ -176,6 +176,16 @@ stages:
       application: ${CF_APP}
     script: |
       #!/bin/bash
+      existingPiwikRedis=$(cf s|grep piwikredis|cut -d" " -f1-1) > /dev/null 2>&1
+      if [ -n "${existingPiwikRedis}" ]; then
+        echo "  Pre-creating RedisCloud Service named [piwikredis]"
+        cf cs rediscloud 30mb piwikredis
+      fi
+      existingPiwikDB=$(cf s|grep piwikdb|cut -d" " -f1-1) > /dev/null 2>&1
+      if [ -n "${existingPiwikDB}" ]; then
+        echo "  Pre-creating ClearDB MySQL Service named [piwikdb]"
+        cf cs cleardb spark piwikdb
+      fi
       echo "Sendgrid detection routine ..." > /dev/null 2>&1
       existingSendgrid=$(cf s|grep sendgrid|cut -d" " -f1-1) > /dev/null 2>&1
       if [ -n "${existingSendgrid}" ] && [ "${existingSendgrid}" != "sendmail" ]; then
@@ -184,6 +194,9 @@ stages:
         sed -e "s/sendmail/${existingSendgrid}/g" ./manifest.yml > manifest.new
         rm manifest.yml
         mv manifest.new manifest.yml
+      else
+        echo "  Pre-creating Sendgrid Service named [sendmail]"
+        cf cs sendgrid free sendmail
       fi
       cf push "${CF_APP}"
       # view logs
