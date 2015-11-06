@@ -6,6 +6,9 @@ declared-services:
   sendmail:
     label: sendgrid
     plan: free
+  piwikredis:
+    label: rediscloud
+    plan: 30mb
 
 applications:
 - name: piwikstart
@@ -16,3 +19,4 @@ applications:
   services:
   -  piwikdb
   -  sendmail
+  -  piwikredis

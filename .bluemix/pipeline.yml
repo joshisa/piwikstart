@@ -90,6 +90,8 @@ stages:
               # Will not run if no directories are available
               echo -e "    ${Cyan}Installing ${f} User-Provided Plugin ...${no_color}"
               mv $f ./htdocs/piwik/plugins
+          else
+              echo -e "    ${Cyan}NO User-Provided Plugins detected...${no_color}"
           fi
       done
       

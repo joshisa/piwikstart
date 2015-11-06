@@ -541,15 +541,42 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         # Reference: https://developer.ibm.com/answers/questions/8312/how-do-i-enable-tlsssl-for-my-bluemix-application/
         $config->General['assume_secure_protocol'] = 1;
         $config->General['force_ssl'] = 1;
-         
+
         # Setup proxy_client_headers to accurately detect GeoIPs of visiting clients
         $config->General['proxy_client_headers'] = array("HTTP_X_CLIENT_IP","HTTP_X_FORWARDED_FOR","HTTP_X_CLUSTER_CLIENT_IP","HTTP_CLIENT_IP");
- 
+
         $config->General['proxy_host_headers'] = "HTTP_X_FORWARDED_HOST";
-  
+
+        # Implement some default settings that optimize performance
+        $config->General['enabled_periods_UI'] = "day,week,month,year";
+        $config->General['enabled_periods_API'] = "day,week,month,year";
+        $config->General['action_category_level_limit'] = 3;
+        $config->General['show_multisites_sparklines'] = 0;
+        $config->General['anonymous_user_enable_use_segments_API'] = 0;
+        $config->General['browser_archiving_disabled_enforce'] = 1;
+        $config->General['enable_create_realtime_segments'] = 0;
+        $config->General['enable_segment_suggested_values'] = 0;
+        $config->General['adding_segment_requires_access'] = "superuser";
+        $config->General['allow_adding_segments_for_all_websites'] = 0;
+        $config->General['datatable_row_limits'] = "5,10,25,50";
+        $config->General['enable_browser_archiving_triggering'] = 0;
+        $config->General['multisites_refresh_after_seconds'] = 0;
+        $config->General['enable_delete_old_data_settings_admin'] = 0;
+        $config->General['enable_auto_update'] = 0;
+
         # Let us have this Piwik deploy track itself to get some early data and success :-)
-        $config->Debug['enable_measure_piwik_usage_in_idsite'] = 1;
-  
+        # $config->Debug['enable_measure_piwik_usage_in_idsite'] = 1;
+
+        # Emailing the easy way with IBM Bluemix + the SendGrid Service
+        if (isset($_ENV["REDISHOST"])) {
+            $config->RedisCache['host']=$_ENV["REDISHOST"];
+            $config->RedisCache['port']=$_ENV["REDISPORT"];
+            $config->RedisCache['timeout']=0.0;
+            $config->RedisCache['password']=$_ENV["REDISPASSWORD"];
+            $config->RedisCache['database']=14;
+            $config->ChainedCache['backends'] = array("array","redis");
+        }
+
         # Let's setup the config files trusted hosts entries to handle
         # 1...N amount of user-defined IBM Bluemix app routes
         if (isset($_ENV["APPURIS"])) {
@@ -557,7 +584,7 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
                 $this->addTrustedHosts("https://" . $application_uri);
               }
         }
- 
+
         # Emailing the easy way with IBM Bluemix + the SendGrid Service
         if (isset($_ENV["MAILHOST"])) {
             $config->mail['transport']="smtp";

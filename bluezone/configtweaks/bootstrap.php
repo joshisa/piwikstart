@@ -14,6 +14,9 @@ $_ENV["MAILHOST"] = NULL;
 $_ENV["SMSACCOUNT"] = NULL;
 $_ENV["SMSTOKEN"] = NULL;
 $_ENV["SMSURL"] = NULL;
+$_ENV["REDISHOSTNAME"] = NULL;
+$_ENV["REDISPASSWORD"] = NULL;
+$_ENV["REDISPORT"] = NULL;
  
 $application = getenv("VCAP_APPLICATION");
 $application_json = json_decode($application,true);
@@ -42,6 +45,13 @@ if (isset($services_json)) {
         $_ENV["SQLPASSWORD"] = $mysql_config["password"];
     }
       
+    if (isset($services_json["rediscloud"][0]["credentials"])) {
+        $redis_config = $services_json["rediscloud"][0]["credentials"];
+        $_ENV["REDISHOSTNAME"] = $redis_config["hostname"];
+        $_ENV["REDISPASSWORD"] = $redis_config["password"];
+        $_ENV["REDISPORT"] = $redis_config["port"];
+    }
+
     if (isset($services_json["sendgrid"][0]["credentials"])) {
         $sendgrid_config = $services_json["sendgrid"][0]["credentials"];
         $_ENV["MAILUSER"] = $sendgrid_config["username"];
