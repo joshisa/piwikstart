@@ -568,7 +568,7 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         # $config->Debug['enable_measure_piwik_usage_in_idsite'] = 1;
 
         # Emailing the easy way with IBM Bluemix + the SendGrid Service
-        if (isset($_ENV["REDISHOST"])) {
+        if (isset($_ENV["REDISHOSTNAME"])) {
             $config->RedisCache['host']=$_ENV["REDISHOST"];
             $config->RedisCache['port']=$_ENV["REDISPORT"];
             $config->RedisCache['timeout']=0.0;
