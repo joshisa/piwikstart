@@ -41,6 +41,7 @@ Open source projects are awesome. PaaS CloudFoundry enabling of self-hosted open
 ```
 $ cf files <replace_me_with_app_name> /app/fetchConfig.sh | sed -e '1,3d' > fetchConfig.sh
 $ chmod +x fetchConfig.sh
+$ ./fetchConfig.sh
 ```
 - This should pull down a helper bash script similar to what's shown below.  Your app's name will already be populated :-)
 ```
