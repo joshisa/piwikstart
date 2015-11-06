@@ -11,18 +11,23 @@ Open source projects are awesome. PaaS CloudFoundry enabling of self-hosted open
 
 #### Getting Started  (Pre-requisite: [CF CLI](https://github.com/cloudfoundry/cli/releases "CF CLI"))
 - Click the Deploy Button Above.  Verification Point:  Await success of all 4 steps on the deploy page.
-- Click on the 2nd step (Cloned Repository Successfully).  Click on the Edit Code button in the upper right to establish a git repository for your newly created project.  There is a **git** section that should contain your repo url.  Clone the repo ... ```git clone https://hub.jazz.net/git/<your_id>/<app_name>/``` of the IBM DevOps repository to your local machine.
-
+ 
 ![Step 1](https://github.com/joshisa/piwikstart/blob/master/bluezone/img/step1.png)
 
-- Browse to the web installation url @ https://replace_me_with_app_name.mybluemix.net/ and complete the 8 step process.
+- Click on the 2nd step (Cloned Repository Successfully).  Click on the Edit Code button in the upper right to establish a git repository for your newly created project.  There is a **git** section that should contain your repo url.  
+![Git URL Section](https://github.com/joshisa/piwikstart/blob/master/bluezone/img/giturl.png)
+- Clone the repo of the IBM DevOps repository to your local machine.
+  ```git clone https://hub.jazz.net/git/<your_id>/<app_name>/``` 
+- Browse to the web installation url @ https://replace_me_with_app_name.mybluemix.net/ and complete the multi-step process.  During the system check phase, it is normal to see a file integrity check warning message.  This is caused by:
+  - missing .gitignore files
+  - detection of tweaks done to the web installer for cloud enablement
 - {OPTIONAL} At this point, you may choose to login and browse to the administration section of Piwik.  Within the plugins section, you will be able to **activate** or **deactivate** plugins of your choice.  Your choices will be persisted within a generated file named **config.ini.php** that we will need to pull down and persist back into the repository.  As a cloud-enabled 12 factor application, the app's local file storage is ephemeral.  Without persistence, any restart or crash/restart sequence will cause your Piwik application to revert back to the web installer sequence.
 - Within the terminal, browse to the root dir of your local cloned repo and execute a command similar to:
 ```
-cf files <replace_me_with_app_name> /app/fetchConfig.sh | sed -e '1,3d' > fetchConfig.sh
-chmod +x fetchConfig.sh
+$ cf files <replace_me_with_app_name> /app/fetchConfig.sh | sed -e '1,3d' > fetchConfig.sh
+$ chmod +x fetchConfig.sh
 ```
-- This should pull down a helper fetch script similar to what's shown below.  Your app's name will already be populated :-)
+- This should pull down a helper bash script similar to what's shown below.  Your app's name will already be populated :-)
 ```
 #!/bin/bash
 rm ./bluezone/configtweaks/config.ini.php
@@ -36,7 +41,7 @@ sed -i -e '1,3d' ./bluezone/configtweaks/config.ini.php
 - With this git commit, your IBM DevOps pipeline will retrigger and re-deploy Piwik.  In a few short minutes, your Piwik application will be ready for you to use.
 
 #### How is this better than Docker?
-Better is not the right question.  Sometimes a cool project may not have a high-quality Dockerfile image available yet.  Sometimes you may want to learn more about how specific runtimes and buildpacks behave within a PaaS - so what better way than to see in detail how complex apps and platforms are assembled for PaaS CloudFoundry cloud deployment.  Sometimes you feel more comfortable understanding <<fill in your favorite runtime language - PHP, Python, Node.js, ...>> than Docker CLI.  Sometimes Docker is the way better approach to go, but you like doing things the hard way.
+Better is not the right question.  Sometimes a cool project may not have a high-quality Dockerfile image available yet.  Sometimes you may want to learn more about how specific runtimes and buildpacks behave within a PaaS - so what better way than to see in detail how complex apps and platforms are assembled for PaaS CloudFoundry cloud deployment.  Sometimes you feel more comfortable understanding <<fill in your favorite runtime language - PHP, Python, Node.js, ...>> than Docker CLI.  Sometimes Docker is the way better approach to go, but you like doing things the hard way ;-)
 
 #### How does it work?
 The magic is in the pipeline.yml.  A build script is embedded which precisely defines the steps required to PaaS CloudFoundry enable the opensource application.  The script pulls code from various locations, applies tweaks and cleans itself up into a deployable asset.  Using IBM DevOps services, you may download the built asset (which can then be tweaked further and deployed manually using the CF CLI) or simply let the DevOps pipeline continue to do the assembly and deploy effort for you.  The former is useful for devs looking to innvoate and expand capabilities of the open source project (For example: adding cognitive computing interactions from something like IBM Watson) and the latter is for folks simply desiring a rapid turnkey deployment of the opensource project for end-use.
