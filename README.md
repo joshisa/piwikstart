@@ -15,7 +15,7 @@ Open source projects are awesome. PaaS CloudFoundry enabling of self-hosted open
 
 ![Step 1](https://github.com/joshisa/piwikstart/blob/master/bluezone/img/step1.png)
 
-- Browse to the web installation url @ https://<replace_me_with_app_name>.mybluemix.net/ and complete the 8 step process.
+- Browse to the web installation url @ https://replace_me_with_app_name.mybluemix.net/ and complete the 8 step process.
 - {OPTIONAL} At this point, you may choose to login and browse to the administration section of Piwik.  Within the plugins section, you will be able to **activate** or **deactivate** plugins of your choice.  Your choices will be persisted within a generated file named **config.ini.php** that we will need to pull down and persist back into the repository.  As a cloud-enabled 12 factor application, the app's local file storage is ephemeral.  Without persistence, any restart or crash/restart sequence will cause your Piwik application to revert back to the web installer sequence.
 - Within the terminal, browse to the root dir of your local cloned repo and create+run the following executable bash shellscript or you may execute each step manually.
 ```
