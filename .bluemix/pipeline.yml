@@ -167,7 +167,7 @@ stages:
   triggers:
   - type: stage
   jobs:
-  - name: PlayWithTheToy
+  - name: OpenPresent
     type: deployer
     target:
       url: ${CF_TARGET_URL}
@@ -176,22 +176,20 @@ stages:
       application: ${CF_APP}
     script: |
       #!/bin/bash
-      existingPiwikRedis=$(cf s|grep piwikredis|cut -d" " -f1-1) > /dev/null 2>&1
-      if [ -n "${existingPiwikRedis}" ]; then
+      # http://serverfault.com/questions/7503/how-to-determine-if-a-bash-variable-is-empty#answer-382740
+      if [ -z $(cf s|grep piwikredis|cut -d" " -f1-1) ]; then
         echo "  Pre-creating RedisCloud Service named [piwikredis]"
         cf cs rediscloud 30mb piwikredis
       fi
-      existingPiwikDB=$(cf s|grep piwikdb|cut -d" " -f1-1) > /dev/null 2>&1
-      if [ -n "${existingPiwikDB}" ]; then
+      if [ -z $(cf s|grep piwikdb|cut -d" " -f1-1) ]; then
         echo "  Pre-creating ClearDB MySQL Service named [piwikdb]"
         cf cs cleardb spark piwikdb
       fi
       echo "Sendgrid detection routine ..." > /dev/null 2>&1
-      existingSendgrid=$(cf s|grep sendgrid|cut -d" " -f1-1) > /dev/null 2>&1
-      if [ -n "${existingSendgrid}" ] && [ "${existingSendgrid}" != "sendmail" ]; then
+      if [ -n $(cf s|grep sendgrid|cut -d" " -f1-1) ] && [ $(cf s|grep sendgrid|cut -d" " -f1-1) != "sendmail" ]; then
         echo "  Detected existing sendgrid service ${existingSendgrid} within target space"
         echo "  Updating manifest.yml file to match target space sendgrid service"
-        sed -e "s/sendmail/${existingSendgrid}/g" ./manifest.yml > manifest.new
+        sed -e "s/sendmail/$(cf s|grep sendgrid|cut -d" " -f1-1)/g" ./manifest.yml > manifest.new
         rm manifest.yml
         mv manifest.new manifest.yml
       else
