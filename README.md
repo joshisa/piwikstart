@@ -26,7 +26,17 @@ Open source projects are awesome. PaaS CloudFoundry enabling of self-hosted open
 ![Admin](https://github.com/joshisa/piwikstart/blob/master/bluezone/img/admin.png)
 
 - {OPTIONAL} At this point, you may choose to login and browse to the administration section of Piwik.  
-  **NOTE**: To encourage better security practices, the deploy is configured to only allow login via **HTTPS**.  Attempting to login via non-SSL will result in a **Form Security failed error**.  Within the plugins section, you will be able to **activate** or **deactivate** plugins of your choice.  Your choices will be persisted within a generated file named **config.ini.php** that we will need to pull down and persist back into the repository.  As a cloud-enabled 12 factor application, the app's local file storage is ephemeral.  Without persistence, any restart or crash/restart sequence will cause your Piwik application to revert back to the web installer sequence.
+  **NOTE**: To encourage better security practices, the deploy is configured to only allow login via **HTTPS**.  Attempting to login via non-SSL will result in a **Form Security failed error**.  Within the plugins section, you will be able to **activate** or **deactivate** plugins of your choice.  As a convenience, this repo "assembles" the following plugins within the deployment:
+  - SecurityInfo (recommended)
+  - PerformanceInfo (recommended)
+  - PlatformsReport (recommended)
+  - SimpleSysMon (recommended)
+  - LoginLdap
+  - CustomAlerts
+  - CustomOptOut
+  - FlagCounter
+  - SimplePageBuilder
+- Your choices will be persisted within a generated file named **config.ini.php** that we will need to pull down and persist back into the repository.  As an application running on a PaaS, the app's local file storage is ephemeral.  Without persistence, any restart or crash/restart sequence will cause your Piwik application to revert back to the web installer sequence.
 - Within the terminal, browse to the root dir of your local cloned repo and execute a command similar to:
 ```
 $ cf files <replace_me_with_app_name> /app/fetchConfig.sh | sed -e '1,3d' > fetchConfig.sh
