@@ -16,10 +16,8 @@ Open source projects are awesome. PaaS CloudFoundry enabling of self-hosted open
 
 - Click on the 2nd step (Cloned Repository Successfully).  Click on the Edit Code button in the upper right to establish a git repository for your newly created project.  There is a **git** section that should contain your repo url.  
 ![Git URL Section](https://github.com/joshisa/piwikstart/blob/master/bluezone/img/giturl.png)
-- Clone the repo of the IBM DevOps repository to your local machine.
-  ```
-  git clone https://hub.jazz.net/git/<your_id>/<app_name>/
-  ``` 
+- Clone the repo of the IBM DevOps repository to your local machine.  
+  ``` git clone https://hub.jazz.net/git/<your_id>/<app_name>/ ``` 
 - Browse to the web installation url @ https://replace_me_with_app_name.mybluemix.net/ and complete the multi-step process.  During the system check phase, it is normal to see a file integrity check warning message.  This is caused by:
   - missing .gitignore files
   - detection of tweaks done to the web installer for cloud enablement
