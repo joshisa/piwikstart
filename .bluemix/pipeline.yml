@@ -7,7 +7,7 @@ stages:
   triggers:
   - type: commit
   jobs:
-  - name: WrappingThePresent
+  - name: WrapPresent
     type: builder
     artifact_dir: ./
     build_type: shell
@@ -163,7 +163,7 @@ stages:
   inputs:
   - type: job
     stage: SelfAssembly
-    job: WrappingThePresent
+    job: WrapPresent
   triggers:
   - type: stage
   jobs:
