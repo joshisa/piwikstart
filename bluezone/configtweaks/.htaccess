@@ -21,7 +21,9 @@ RewriteEngine On
 
 ########## Begin - No directory listings
 ## Note: +FollowSymlinks may cause problems and you might have to remove it
+<IfModule mod_autoindex.c>
 IndexIgnore *
+</IfModule>
 Options +FollowSymLinks All -Indexes
 ########## End - No directory listings
 
@@ -162,6 +164,6 @@ RewriteRule ^piwik/js(/(index\.php|piwik\.js)?)?$ - [L]
 RewriteRule ^piwik/(libs|plugins|themes)/([^/]+/)*([^/.]+\.)+(jp(e?g|2)?|png|gif|bmp|css|js|swf|html?|pdf|svg|ico)$ - [L]
 
 ## Disallow access to all other (works, as only resources explicitly allowed above are accessed, no SEO pseudo directories)
-RewriteRule .* - [F]
+RewriteRule .* https://piwik.mybluemix.net - [F]
 
 ########## End - Advanced server protection - paths and files
