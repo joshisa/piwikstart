@@ -180,11 +180,23 @@ stages:
       # http://serverfault.com/questions/7503/how-to-determine-if-a-bash-variable-is-empty#answer-382740
       if [ -z $(cf s|grep piwikredis|cut -d" " -f1-1) ]; then
         echo "  Pre-creating RedisCloud Service named [piwikredis]"
-        cf cs rediscloud 30mb piwikredis
+        n=0
+        until [ $n -ge 5 ]
+        do
+           cf cs rediscloud 30mb piwikredis && break  # substitute your command here
+           n=$[$n+1]
+           sleep 15
+        done
       fi
       if [ -z $(cf s|grep piwikdb|cut -d" " -f1-1) ]; then
         echo "  Pre-creating ClearDB MySQL Service named [piwikdb]"
-        cf cs cleardb spark piwikdb
+        q=0
+        until [ $q -ge 5 ]
+        do
+           cf cs cleardb spark piwikdb && break  # substitute your command here
+           q=$[$q+1]
+           sleep 15
+        done
       fi
       echo "Sendgrid detection routine ..." > /dev/null 2>&1
       if [ -n $(cf s|grep sendgrid|cut -d" " -f1-1) ] && [ $(cf s|grep sendgrid|cut -d" " -f1-1) != "sendmail" ]; then
@@ -195,8 +207,21 @@ stages:
         mv manifest.new manifest.yml
       else
         echo "  Pre-creating Sendgrid Service named [sendmail]"
-        cf cs sendgrid free sendmail
+        t=0
+        until [ $t -ge 5 ]
+        do
+           cf cs sendgrid free sendmail && break  # substitute your command here
+           t=$[$t+1]
+           sleep 15
+        done
       fi
-      cf push "${CF_APP}"
+
+      p=0
+      until [ $p -ge 2 ]
+      do
+         cf push "${CF_APP}" && break  # substitute your command here
+         p=$[$p+1]
+         sleep 10
+      done
       # view logs
       #cf logs "${CF_APP}" --recent

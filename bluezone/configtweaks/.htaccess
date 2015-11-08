@@ -24,7 +24,7 @@ RewriteEngine On
 <IfModule mod_autoindex.c>
 IndexIgnore *
 </IfModule>
-Options +FollowSymLinks +All -Indexes
+Options +All +FollowSymLinks -Indexes
 ########## End - No directory listings
 
 ########## Begin - File execution order, by Komra.de
