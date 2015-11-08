@@ -134,6 +134,7 @@ stages:
       echo -e "  ${Yellow}Making piwik artifacts ${Cyan}Bluemix ${Yellow}friendly ...${no_color}"
       mv ./bluezone/configtweaks/bootstrap.php ./htdocs/piwik
       mv ./bluezone/configtweaks/.user.ini ./htdocs/piwik
+      mv ./bluezone/configtweaks/.htaccess ./htdocs/piwik
       mv ./bluezone/apptweaks/FormDatabaseSetup.php ./htdocs/piwik/plugins/Installation
       mv ./bluezone/apptweaks/Controller.php ./htdocs/piwik/plugins/Installation
       mv ./bluezone/apptweaks/FormFirstWebsiteSetup.php ./htdocs/piwik/plugins/Installation
