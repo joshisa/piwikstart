@@ -177,9 +177,20 @@ stages:
       application: ${CF_APP}
     script: |
       #!/bin/bash
+      # For some reason, the deploy stage shell has tracing turned on.  Lets turn it off
+      set +x
+      ##########
+      # Colors##
+      ##########
+      Green='\e[0;32m'
+      Red='\e[0;31m'
+      Yellow='\e[0;33m'
+      Cyan='\e[0;36m'
+      no_color='\e[0m' # No Color
+      #############
       # http://serverfault.com/questions/7503/how-to-determine-if-a-bash-variable-is-empty#answer-382740
       if [ -z $(cf s|grep piwikredis|cut -d" " -f1-1) ]; then
-        echo "  Pre-creating RedisCloud Service named [piwikredis]"
+        echo -e "  ${Yellow}Pre-creating RedisCloud Service named [${Cyan}piwikredis${Yellow}]${no_color}"
         n=0
         until [ $n -ge 5 ]
         do
@@ -189,7 +200,7 @@ stages:
         done
       fi
       if [ -z $(cf s|grep piwikdb|cut -d" " -f1-1) ]; then
-        echo "  Pre-creating ClearDB MySQL Service named [piwikdb]"
+        echo -e "  ${Yellow}Pre-creating ClearDB MySQL Service named [${Cyan}piwikdb${Yellow}]${no_color}"
         q=0
         until [ $q -ge 5 ]
         do
@@ -200,13 +211,13 @@ stages:
       fi
       echo "Sendgrid detection routine ..." > /dev/null 2>&1
       if [ -n $(cf s|grep sendgrid|cut -d" " -f1-1) ] && [ $(cf s|grep sendgrid|cut -d" " -f1-1) != "sendmail" ]; then
-        echo "  Detected existing sendgrid service ${existingSendgrid} within target space"
-        echo "  Updating manifest.yml file to match target space sendgrid service"
+        echo -e "  ${Yellow}Detected existing sendgrid service ${existingSendgrid} within target space${no_color}"
+        echo -e "  ${Yellow}Updating manifest.yml file to match target space sendgrid service${no_color}"
         sed -e "s/sendmail/$(cf s|grep sendgrid|cut -d" " -f1-1)/g" ./manifest.yml > manifest.new
         rm manifest.yml
         mv manifest.new manifest.yml
       else
-        echo "  Pre-creating Sendgrid Service named [sendmail]"
+        echo -e "  ${Yellow}Pre-creating Sendgrid Service named [${Cyan}sendmail${Yellow}]${no_color}"
         t=0
         until [ $t -ge 5 ]
         do

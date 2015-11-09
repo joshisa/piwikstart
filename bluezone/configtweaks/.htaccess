@@ -1,5 +1,5 @@
 ###############################################################################
-## .htaccess example implementation, last tested with Piwik 1.11.1
+## .htaccess example implementation, last tested with Piwik 2.15.0
 ##
 ## Based on version 2.5 (proposed) of May 16th, 2011 (proposed 2.5.5 wiki doc
 ## history verstion by G1smd of May 17th, 2011) Joomla .haccess file
@@ -16,7 +16,7 @@ RewriteEngine On
 # is not directly related to physical file paths.
 # Update Your Joomla! Directory (just / for root)
 
-#RewriteBase /
+RewriteBase /
 ########## End - RewriteBase
 
 ########## Begin - No directory listings
@@ -24,7 +24,7 @@ RewriteEngine On
 <IfModule mod_autoindex.c>
 IndexIgnore *
 </IfModule>
-Options +All +FollowSymLinks -Indexes
+Options +FollowSymLinks -Indexes
 ########## End - No directory listings
 
 ########## Begin - File execution order, by Komra.de
@@ -142,8 +142,12 @@ RewriteRule .* - [F]
 #           so that the redirect occurs before the exceptions are accessed.
 #        3. Replace test.example.com with your own domain
 ########################################################################
-RewriteCond %{HTTP_HOST} !^piwik\.mybluemix\.net$
-RewriteRule ^(.*)$ https://piwik.mybluemix.net/$1 [R=301,L]
+# RewriteCond %{HTTP_HOST} !^replacemewithyourappname\.mybluemix\.net$
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Forces a redirect to SSL
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
 
 ########## Begin - Advanced server protection rules exceptions ####
 ##
@@ -157,13 +161,14 @@ RewriteRule ^robots\.txt$ - [L]
 
 ########## Begin - Advanced server protection - paths and files
 ## Allow Piwik API files or plain directories
-RewriteRule ^piwik(/(index\.php|piwik\.(php|js))?)?$ - [L]
-RewriteRule ^piwik/js(/(index\.php|piwik\.js)?)?$ - [L]
+RewriteRule ^(index\.php|piwik\.(php|js))?$ - [L]
+RewriteRule ^js(/(index\.php|piwik\.js)?)?$ - [L]
 
 ## Allow limited access for certain Piwik system directories with client-accessible content
-RewriteRule ^piwik/(libs|plugins|themes)/([^/]+/)*([^/.]+\.)+(jp(e?g|2)?|png|gif|bmp|css|js|swf|html?|pdf|svg|ico)$ - [L]
+RewriteRule ^(libs|plugins|themes|misc)/([^/]+/)*([^/.]+\.)+(jp(e?g|2)?|png|gif|ttf|bmp|css|js|swf|html?|pdf|svg|ico)$ - [L]
 
 ## Disallow access to all other (works, as only resources explicitly allowed above are accessed, no SEO pseudo directories)
-RewriteRule .* https://piwik.mybluemix.net - [F]
+RewriteRule .* - [F]
 
 ########## End - Advanced server protection - paths and files
+
