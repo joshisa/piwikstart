@@ -22,11 +22,11 @@ Open source projects are awesome. PaaS CloudFoundry enabling of self-hosted open
   - movement of composer config files
   - missing .gitignore files
   - detection of web installer tweaks to reduce end user friction
+  - 403 blocked access for the piwik.php test because of default security hardening
 
 ![Admin](https://github.com/joshisa/piwikstart/blob/master/bluezone/img/admin.png)
 
-- {OPTIONAL} At this point, you may choose to login and browse to the administration section of Piwik.  
-  **NOTE**: To encourage better security practices, the deploy is configured to only allow login via **HTTPS**.  Attempting to login via non-SSL will result in a **Form Security failed error**.  Within the plugins section, you will be able to **activate** or **deactivate** plugins of your choice.  As a convenience, this repo "assembles" the following plugins within the deployment:
+- At this point, you should login and browse to the administration section of Piwik.  It is important for you to **ACTIVATE** at least one plugin (SecurityInfo: Recommended) to proceed with this install process.  This is required in order to have a fully generated **config.ini.php** prior to downloading it. **NOTE**: To encourage better security practices, the deploy is configured to only allow login via **HTTPS** and will force redirect any attempts to access the deploy via NON-SSL.  As a convenience, this repo "assembles" the following plugins within the deployment:
   - SecurityInfo (recommended)
   - PerformanceInfo (recommended)
   - PlatformsReport (recommended)
@@ -43,13 +43,7 @@ $ cf files <replace_me_with_app_name> /app/fetchConfig.sh | sed -e '1,3d' > fetc
 $ chmod +x fetchConfig.sh
 $ ./fetchConfig.sh
 ```
-- This should pull down a helper bash script similar to what's shown below.  Your app's name will already be populated :-)
-```
-#!/bin/bash
-rm ./bluezone/configtweaks/config.ini.php
-cf files <replace_me_with_app_name> /app/htdocs/piwik/config/config.ini.php > ./bluezone/configtweaks/config.ini.php
-sed -i -e '1,3d' ./bluezone/configtweaks/config.ini.php
-```
+- This should pull down a helper bash script named fetchConfig.sh.  Your app's name will already be populated :-)  This script helps you (repeatedly) persist the config file in the expected location.  It also will **DEACTIVATE** some of the Example Plugins that are deemed a performance+security vulnerability.
 - Perform a git add, git commit and git push to persist the config.ini.php within the IBM DevOps repository. For example,
 ```git add -A```
 ```git commit -m "Persisting the installer wizard generated config.ini.php"```
