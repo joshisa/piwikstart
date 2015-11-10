@@ -61,7 +61,7 @@ stages:
       
       echo -e "${harpoons}${Yellow}    Fetching GeoLiteCity Data Zip ...${no_color}"
       wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz -nv -O ./bluezone/GeoLiteCity.dat.gz
-      gzip -dc < ./bluezone/GeoLiteCity.dat.gz > ./htdocs/piwik/misc/GeoLiteCity.dat > /dev/null 2>&1
+      gunzip -c < ./bluezone/GeoLiteCity.dat.gz > ./htdocs/piwik/misc/GeoIPCity.dat > /dev/null 2>&1
       
       echo -e "${tools}${Yellow}    Setting up some extra marketplace Piwik plugins ...${no_color}"
       echo -e "${harpoons}${Cyan}      Installing SecurityInfo ...${no_color}"
