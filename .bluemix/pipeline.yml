@@ -145,6 +145,10 @@ stages:
       # Organize the artifact structure to be CF PHP Buildpack friendly
       echo -e "${cloud}${Yellow}    Making artifacts CF PHP friendly ...${no_color}"
       mv ./bluezone/configtweaks/.bp-config .
+      mkdir .extensions
+      mkdir .extensions/geoip
+      mv ./bluezone/configtweaks/extension.py .extensions/geoip
+      mv ./bluezone/configtweaks/.php-extensions .
       
       # Organize the artifact structure to facilitate BMX deploy
       echo -e "${cloud}${Yellow}    Making piwik artifacts ${Cyan}Bluemix ${Yellow}friendly ...${no_color}"
