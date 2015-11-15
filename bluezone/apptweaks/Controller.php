@@ -563,6 +563,8 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         $config->General['multisites_refresh_after_seconds'] = 0;
         $config->General['enable_delete_old_data_settings_admin'] = 0;
         $config->General['enable_auto_update'] = 0;
+        $config->Debug['enable_measure_piwik_usage_in_idsite'] = 0;
+        $config->Debug['allow_upgrades_to_beta'] = 0;
 
         # Let us have this Piwik deploy track itself to get some early data and success :-)
         # $config->Debug['enable_measure_piwik_usage_in_idsite'] = 1;
