@@ -1,6 +1,4 @@
 <?php
-namespace Piwik\Plugins\MobileMessaging\SMSProvider;
-
 /**
  * IBM Bluemix(tm) Twilio Piwik SMSProvider Plugin
  *
@@ -10,25 +8,40 @@ namespace Piwik\Plugins\MobileMessaging\SMSProvider;
  * @author Sanjay Joshi <joshisa (at) us (dot) ibm (dot) com>
  * @copyright IBM 2014
  */
- 
+namespace Piwik\Plugins\MobileMessaging\SMSProvider;
 use Exception;
 use Piwik\Http;
 use Piwik\Plugins\MobileMessaging\APIException;
 use Piwik\Plugins\MobileMessaging\SMSProvider;
-use Piwik\Log;
-use Services_Twilio;
- 
 require_once PIWIK_INCLUDE_PATH . "/libs/twilio-php-master/Services/Twilio.php";
 require_once PIWIK_INCLUDE_PATH . "/plugins/MobileMessaging/APIException.php";
- 
-
+/**
+ * @ignore
+ */
 /**
  * Used to provide Twilio SMS Capability within Piwik
  *
  */
 class Twilio extends SMSProvider
 {
- 
+ 	public function getId()
+    {
+        return 'Twilio';
+    }
+    public function getDescription()
+    {
+        return 'You can use <a target="_blank" href="?module=Proxy&action=redirect&url=https://www.twilio.com/sms"><img src="https://www.twilio.com/packages/foundation/img/twilio-messaging.png"/></a> to send SMS Reports from Piwik.<br/>
+      <ul>
+      <li> First, <a target="_blank" href="?module=Proxy&action=redirect&url=https://www.twilio.com/sms"> Register for a Twilio Account and attach a <a href="?module=Proxy&action=redirect&url=https://www.bluemix.net">IBM Bluemix</a> Twilio service to your Piwik application (Signup is free!) To learn more about IBM Bluemix + Twilio, look <a href="?module=Proxy&action=redirect&url=https://www.twilio.com/blog/2014/02/twilio-and-ibm-codename-bluemix-nt.html">here</a>.
+      </li><li> Enter your Twilio Account&apos;s Incoming Phone Number on this page. </li>
+      </ul>
+      <br/><em>About Twilio: </em><ul>
+      <li>Lets you use standard web languages to build SMS and voice applications. We’re connected to carrier networks globally and expose them to you via a clean, powerful web API. So bring your favorite programming language, a web server, and build the next generation of communications with us.
+      </li><li>Pay as you go model.  Cost per SMS message is around ~0.08USD (0.06EUR).
+      </li><li>Built in the cloud. API is always available, continuously upgraded and auto-scales to meet your needs. When you move your communications to the cloud, there are no tricky VPNs to configure or SMPP binds to manage. Just send us your message via HTTP, and we’ll deliver it anywhere in the world.
+      </li>
+      </ul>';
+    }
     // Read your Twilio AuthToken from www.twilio.com/user/account
     public function verifyCredential($apiKey)
     {
@@ -84,7 +97,6 @@ class Twilio extends SMSProvider
               Log::info('TwilioSMS: Cleansing user-provided Twilio Managed (FROM) Phone Number');
               $badchars = array("(", ")", "-", ".", " ");
               $incomingTwilioClean = str_replace($badchars, "", $incomingTwilio);
-
               if ($this->validateTwilioNumber($incomingTwilioClean)) {
                 //"Bluemix Twilio Service Account verified using Incoming #".$number->phone_number;
                 return  "Incoming Number (".$incomingTwilioClean.") was successfully validated. Happy Messaging!";
@@ -113,7 +125,6 @@ class Twilio extends SMSProvider
             if (!isset($_ENV["SMSACCOUNT"]) || !isset($_ENV["SMSTOKEN"])) {
                 throw new APIException("IBM Bluemix Twilio Environment Variable not set.  Inspect bootstrap.php for environment variable parsing logic.");
             }
-
             $client = new Services_Twilio($_ENV["SMSACCOUNT"],$_ENV["SMSTOKEN"]);
             Log::info('TwilioSMS: Enumerate through incoming_phone_numbers ...');
             foreach ($client->account->incoming_phone_numbers as $number) {
