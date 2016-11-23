@@ -53,9 +53,9 @@ stages:
       echo -e "${harpoons}${Yellow}    Updating git submodules ...${no_color}"
       git submodule update --init --recursive > /dev/null 2>&1
       
-      echo -e "${harpoons}${Yellow}    Fetching Piwik 2.15.0 Zip ...${no_color}"
+      echo -e "${harpoons}${Yellow}    Fetching Piwik Latest Zip ...${no_color}"
       mkdir htdocs
-      wget https://builds.piwik.org/piwik-2.15.0.zip -nv -O ./bluezone/piwik.zip
+      wget https://builds.piwik.org/latest.zip -nv -O ./bluezone/piwik.zip
       echo -e "${tools}${Yellow}    Extracting Piwik${no_color}"
       unzip -o ./bluezone/piwik.zip -d ./htdocs > /dev/null 2>&1
       
@@ -65,39 +65,39 @@ stages:
       
       echo -e "${tools}${Yellow}    Setting up some extra marketplace Piwik plugins ...${no_color}"
       echo -e "${harpoons}${Cyan}      Installing SecurityInfo ...${no_color}"
-      wget https://plugins.piwik.org/api/1.0/plugins/SecurityInfo/download/1.0.5 -nv -O ./bluezone/SecurityInfo.zip
+      wget https://plugins.piwik.org/api/2.0/plugins/SecurityInfo/download/3.0.2 -nv -O ./bluezone/SecurityInfo.zip
       unzip -o ./bluezone/SecurityInfo.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
       
       echo -e "${harpoons}${Cyan}      Installing LDAP Login ...${no_color}"
-      wget https://plugins.piwik.org/api/1.0/plugins/LoginLdap/download/3.2.1 -nv -O ./bluezone/LoginLdap.zip
+      wget https://plugins.piwik.org/api/2.0/plugins/LoginLdap/download/3.3.1 -nv -O ./bluezone/LoginLdap.zip
       unzip -o ./bluezone/LoginLdap.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
 
       echo -e "${harpoons}${Cyan}      Installing CustomAlerts ...${no_color}"
-      wget https://plugins.piwik.org/api/1.0/plugins/CustomAlerts/download/0.1.21 -nv -O ./bluezone/CustomAlerts.zip
+      wget https://plugins.piwik.org/api/2.0/plugins/CustomAlerts/download/0.1.23 -nv -O ./bluezone/CustomAlerts.zip
       unzip -o ./bluezone/CustomAlerts.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
       
       echo -e "${harpoons}${Cyan}      Installing CustomOptOut ...${no_color}"
-      wget https://plugins.piwik.org/api/1.0/plugins/CustomOptOut/download/0.4.0 -nv -O ./bluezone/CustomOptOut.zip
+      wget https://plugins.piwik.org/api/2.0/plugins/CustomOptOut/download/0.4.2 -nv -O ./bluezone/CustomOptOut.zip
       unzip -o ./bluezone/CustomOptOut.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
       
       echo -e "${harpoons}${Cyan}      Installing SimpleSysMon ...${no_color}"
-      wget https://plugins.piwik.org/api/1.0/plugins/SimpleSysMon/download/0.3.1 -nv -O ./bluezone/SimpleSysMon.zip
+      wget https://plugins.piwik.org/api/2.0/plugins/SimpleSysMon/download/0.3.1 -nv -O ./bluezone/SimpleSysMon.zip
       unzip -o ./bluezone/SimpleSysMon.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
       
       echo -e "${harpoons}${Cyan}      Installing FlagCounter ...${no_color}"
-      wget https://plugins.piwik.org/api/1.0/plugins/FlagCounter/download/0.4.0 -nv -O ./bluezone/FlagCounter.zip
+      wget https://plugins.piwik.org/api/2.0/plugins/FlagCounter/download/3.0.0 -nv -O ./bluezone/FlagCounter.zip
       unzip -o ./bluezone/FlagCounter.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
       
       echo -e "${harpoons}${Cyan}      Installing PerformanceInfo ...${no_color}"
-      wget https://plugins.piwik.org/api/1.0/plugins/PerformanceInfo/download/v0.2.2 -nv -O ./bluezone/PerformanceInfo.zip
+      wget https://plugins.piwik.org/api/2.0/plugins/PerformanceInfo/download/v0.3.1 -nv -O ./bluezone/PerformanceInfo.zip
       unzip -o ./bluezone/PerformanceInfo.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
       
       echo -e "${harpoons}${Cyan}      Installing PlatformsReport ...${no_color}"
-      wget https://plugins.piwik.org/api/1.0/plugins/PlatformsReport/download/1.0.3 -nv -O ./bluezone/PlatformsReport.zip
+      wget https://plugins.piwik.org/api/2.0/plugins/PlatformsReport/download/1.0.4 -nv -O ./bluezone/PlatformsReport.zip
       unzip -o ./bluezone/PlatformsReport.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
       
       echo -e "${harpoons}${Cyan}      Installing SimplePageBuilder ...${no_color}"
-      wget https://plugins.piwik.org/api/1.0/plugins/SimplePageBuilder/download/1.1.0 -nv -O ./bluezone/SimplePageBuilder.zip
+      wget https://plugins.piwik.org/api/2.0/plugins/SimplePageBuilder/download/1.2.0 -nv -O ./bluezone/SimplePageBuilder.zip
       unzip -o ./bluezone/SimplePageBuilder.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
       
       echo -e "${tools}${Cyan}    Setting up user provided plugins ...${no_color}"
@@ -112,14 +112,13 @@ stages:
       done
       
       echo -e "${tools}${Yellow}    Setting up some extra marketplace Piwik themes ...${no_color}"
-      echo -e "${harpoons}${Cyan}      Installing the Darkness Theme ...${no_color}"
-      wget https://themes.piwik.org/api/1.0/plugins/Darkness/download/0.1.4 -nv -O ./bluezone/Darkness.zip
-      unzip -o ./bluezone/Darkness.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
+      echo -e "${harpoons}${Cyan}      Installing the CoffeeCup Theme ...${no_color}"
+      wget https://themes.piwik.org/api/2.0/plugins/CoffeeCup/download/0.1.3 -nv -O ./bluezone/CoffeeCup.zip
+      unzip -o ./bluezone/CoffeeCup.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
       
-      # Deactivated because of 404 failure
-      # echo -e "    ${Cyan}Installing the Proteus_Bold Theme ...${no_color}"
-      # wget https://themes.piwik.org/api/1.0/plugins/Proteus_Bold/download/0.1.4 -nv -O ./bluezone/ProteusBold.zip
-      # unzip -o ./bluezone/ProteusBold.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
+      echo -e "    ${Cyan}Installing the ModernGreen Theme ...${no_color}"
+      wget https://themes.piwik.org/api/2.0/plugins/ModernGreen/download/0.1.0 -nv -O ./bluezone/ModernGreen.zip
+      unzip -o ./bluezone/ModernGreen.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
       
       echo -e "${tools}${Yellow}    Setting up unicode font support ...${no_color}"
       echo -e "${harpoons}${Cyan}      Installing the unifont.ttf ...${no_color}"
