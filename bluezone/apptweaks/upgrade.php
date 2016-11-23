@@ -36,7 +36,6 @@
  *
  */
 use Piwik\SettingsServer;
-
 /**
  *                                   ------------------------------ 5.2 ---
  * @group 5_2
@@ -76,22 +75,18 @@ use Piwik\SettingsServer;
  *    stream_*
  *
  */
-
 /**
  * Constants for future 64-bit integer support.
  *
  */
 if (!defined("PHP_INT_SIZE")) { define("PHP_INT_SIZE", 4); }
 if (!defined("PHP_INT_MAX")) { define("PHP_INT_MAX", 2147483647); }
-
 /*
    These functions emulate the "character type" extension, which is
    present in PHP first since version 4.3 per default. In this variant
    only ASCII and Latin-1 characters are being handled. The first part
    is eventually faster.
 */
-
-
 /**
  * Sets the default client character set.
  *
@@ -112,7 +107,6 @@ if (in_array('mysqli', @get_loaded_extensions()) && !function_exists('mysqli_set
 		return mysqli_query($link, "SET NAMES '$charset'");
 	}
 }
-
 /**
  * parse_ini_file() replacement.
  * Behaves like parse_ini_file($filename, $process_sections);
@@ -130,7 +124,7 @@ if(function_exists('parse_ini_file')) {
 		if(!file_exists($filename)) {
             return false;
         }
-
+        
         # Modified wrapper function.  Capture result from built-in parse_ini_file function or false
         $ini_temp =  parse_ini_file($filename, $process_sections, INI_SCANNER_NORMAL);
         # Test if result is an array.  If so, let's modify the array to reflect VCAP_SERVICES values
@@ -148,7 +142,6 @@ if(function_exists('parse_ini_file')) {
 		if(!file_exists($filename)) {
 			return false;
 		}
-
 		if(function_exists('file_get_contents')) {
 			$ini = file_get_contents($filename);
 		} else if(function_exists('file')) {
@@ -165,13 +158,11 @@ if(function_exists('parse_ini_file')) {
 		} else {
 			return false;
 		}
-
 		if($ini === false) {
 			return false;
 		}
 		if(is_string($ini)) { $ini = explode("\n", str_replace("\r", "\n", $ini)); }
 		if (count($ini) == 0) { return array(); }
-
 		$sections = array();
 		$values = array();
 		$result = array();
@@ -180,10 +171,8 @@ if(function_exists('parse_ini_file')) {
 		foreach ($ini as $line) {
 			$line = trim($line);
 			$line = str_replace("\t", " ", $line);
-
 			// Comments
 			if (!preg_match('/^[a-zA-Z0-9[]/', $line)) {continue;}
-
 			// Sections
 			if ($line{0} == '[') {
 				$tmp = explode(']', $line);
@@ -191,7 +180,6 @@ if(function_exists('parse_ini_file')) {
 				$i++;
 				continue;
 			}
-
 			// Key-value pair
 			list($key, $value) = explode('=', $line, 2);
 			$key = trim($key);
@@ -214,10 +202,8 @@ if(function_exists('parse_ini_file')) {
 					}
 				}
 			}
-
 			$value = trim($value);
 			$value = trim($value, "'\"");
-
 			if ($i == 0) {
 				if (substr($key, -2) == '[]') {
 					$globals[substr($key, 0, -2)][] = $value;
@@ -232,7 +218,6 @@ if(function_exists('parse_ini_file')) {
 				}
 			}
 		}
-
 		for ($j = 0; $j < $i; $j++) {
 			if (isset($values[$j])) {
 				if ($process_sections === true) {
@@ -246,11 +231,9 @@ if(function_exists('parse_ini_file')) {
 				}
 			}
 		}
-
 		return $result + $globals;
 	}
 }
-
 /**
  * glob() replacement.
  * Behaves like glob($pattern, $flags)
@@ -294,7 +277,6 @@ if(function_exists('glob')) {
 		return false;
 	}
 }
-
 /**
  * Reads entire file into a string.
  * This function is not 100% compatible with the native function.
@@ -315,7 +297,6 @@ if (!function_exists('file_get_contents'))
 		return $fcontents;
 	}
 }
-
 /**
  * Safe serialize() and unserialize() replacements
  *
@@ -323,15 +304,12 @@ if (!function_exists('file_get_contents'))
  *
  * @author anthon (dot) pang (at) gmail (dot) com
  */
-
 /*
  * Arbitrary limits for safe_unserialize()
  */
 define('MAX_SERIALIZED_INPUT_LENGTH', 4096);
 define('MAX_SERIALIZED_ARRAY_LENGTH', 256);
 define('MAX_SERIALIZED_ARRAY_DEPTH', 3);
-
-
 /**
  * Safe serialize() replacement
  * - output a strict subset of PHP's native serialized representation
@@ -373,11 +351,9 @@ function _safe_serialize( $value )
 		
 		return 'a:'.count($value).':{'.$out.'}';
 	}
-
 	// safe_serialize cannot serialize resources or objects
 	return false;
 }
-
 /**
  * Wrapper for _safe_serialize() that handles exceptions and multibyte encoding issue
  *
@@ -393,16 +369,13 @@ function safe_serialize( $value )
 		$mbIntEnc = mb_internal_encoding();
 		mb_internal_encoding('ASCII');
 	}
-
 	$out = _safe_serialize($value);
-
 	if (isset($mbIntEnc))
 	{
 		mb_internal_encoding($mbIntEnc);
 	}
 	return $out;
 }
-
 /**
  * Safe unserialize() replacement
  * - accepts a strict subset of PHP's native serialized representation
@@ -419,15 +392,12 @@ function _safe_unserialize($str)
 		// input exceeds MAX_SERIALIZED_INPUT_LENGTH
 		return false;
 	}
-
 	if(empty($str) || !is_string($str))
 	{
 		return false;
 	}
-
 	$stack = array();
 	$expected = array();
-
 	/*
 	 * states:
 	 *   0 - initial state, expecting a single value or array
@@ -439,7 +409,6 @@ function _safe_unserialize($str)
 	while($state != 1)
 	{
 		$type = isset($str[0]) ? $str[0] : '';
-
 		if($type == '}')
 		{
 			$str = substr($str, 1);
@@ -479,7 +448,6 @@ function _safe_unserialize($str)
 			// object or unknown/malformed type
 			return false;
 		}
-
 		switch($state)
 		{
 			case 3: // in array, expecting value or another array
@@ -490,7 +458,6 @@ function _safe_unserialize($str)
 						// array nesting exceeds MAX_SERIALIZED_ARRAY_DEPTH
 						return false;
 					}
-
 					$stack[] = &$list;
 					$list[$key] = array();
 					$list = &$list[$key];
@@ -504,10 +471,8 @@ function _safe_unserialize($str)
 					$state = 2;
 					break;
 				}
-
 				// missing array value
 				return false;
-
 			case 2: // in array, expecting end of array or a key
 				if($type == '}')
 				{
@@ -516,11 +481,9 @@ function _safe_unserialize($str)
 						// array size less than expected
 						return false;
 					}
-
 					unset($list);
 					$list = &$stack[count($stack)-1];
 					array_pop($stack);
-
 					// go to terminal state if we're at the end of the root array
 					array_pop($expected);
 					if(count($expected) == 0) {
@@ -540,15 +503,12 @@ function _safe_unserialize($str)
 						// array size exceeds expected length
 						return false;
 					}
-
 					$key = $value;
 					$state = 3;
 					break;
 				}
-
 				// illegal array index type
 				return false;
-
 			case 0: // expecting array or value
 				if($type == 'a')
 				{
@@ -557,7 +517,6 @@ function _safe_unserialize($str)
 						// array nesting exceeds MAX_SERIALIZED_ARRAY_DEPTH
 						return false;
 					}
-
 					$data = array();
 					$list = &$data;
 					$expected[] = $expectedLength;
@@ -570,12 +529,10 @@ function _safe_unserialize($str)
 					$state = 1;
 					break;
 				}
-
 				// not in array
 				return false;
 		}
 	}
-
 	if(!empty($str))
 	{
 		// trailing data in input
@@ -583,7 +540,6 @@ function _safe_unserialize($str)
 	}
 	return $data;
 }
-
 /**
  * Wrapper for _safe_unserialize() that handles exceptions and multibyte encoding issue
  *
@@ -599,16 +555,13 @@ function safe_unserialize( $str )
 		$mbIntEnc = mb_internal_encoding();
 		mb_internal_encoding('ASCII');
 	}
-
 	$out = _safe_unserialize($str);
-
 	if (isset($mbIntEnc))
 	{
 		mb_internal_encoding($mbIntEnc);
 	}
 	return $out;
 }
-
 /**
  * readfile() replacement.
  * Behaves similar to readfile($filename);
@@ -623,7 +576,6 @@ function safe_unserialize( $str )
 function _readfile($filename, $byteStart, $byteEnd, $useIncludePath = false, $context = null)
 {
 	$count = @filesize($filename);
-
 	// built-in function has a 2 MB limit when using mmap
 	if (function_exists('readfile')
         && $count <= (2 * 1024 * 1024)
@@ -632,25 +584,20 @@ function _readfile($filename, $byteStart, $byteEnd, $useIncludePath = false, $co
     ) {
 		return @readfile($filename, $useIncludePath, $context);
 	}
-
 	// when in doubt (or when readfile() function is disabled)
 	$handle = @fopen($filename, SettingsServer::isWindows() ? "rb" : "r");
 	if ($handle) {
         fseek($handle, $byteStart);
-
         for ($pos = $byteStart; $pos < $byteEnd && !feof($handle); $pos = ftell($handle)) {
 			echo fread($handle, min(8192, $byteEnd - $pos));
-
 			@ob_flush();
 			@flush();
 		}
-
 		fclose($handle);
 		return $byteEnd - $byteStart;
 	}
 	return false;
 }
-
 /**
  * utf8_encode replacement
  *
@@ -665,7 +612,6 @@ if (!function_exists('utf8_encode')) {
 		return $data;
 	}
 }
-
 /**
  * utf8_decode replacement
  *
@@ -680,7 +626,6 @@ if (!function_exists('utf8_decode')) {
 		return $data;
 	}
 }
-
 /**
  * Use strtolower if mb_strtolower doesn't exist (i.e., php not compiled with --enable-mbstring)
  * This is not a functional replacement for mb_strtolower.
@@ -693,7 +638,6 @@ if(!function_exists('mb_strtolower')) {
 		return strtolower($input);
 	}
 }
-
 /**
  * On ubuntu in some cases, there is a bug that gzopen does not exist and one must use gzopen64 instead
  */
@@ -704,10 +648,8 @@ if (!function_exists('gzopen')
         return gzopen64($filename , $mode, $use_include_path);
     }
 }
-
 if (!function_exists('dump')) {
     function dump () {
-
     }
 }
 
