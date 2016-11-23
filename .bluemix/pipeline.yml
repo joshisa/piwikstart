@@ -175,7 +175,7 @@ stages:
       echo -e "${tools}${Yellow}    Generating config helper download script...${no_color}"
       echo -e "#!/bin/bash" > fetchConfig.sh
       echo -e "rm ./bluezone/configtweaks/config.ini.php" >> fetchConfig.sh
-      echo -e "cf files${PROJECT_NAME[1]} /app/htdocs/piwik/config/config.ini.php | sed '/Plugins\[\] = \"ExampleAPI\"/d' | sed '/Plugins\[\] = \"ExamplePlugin\"/d' | sed '/Plugins\[\] = \"ExampleRssWidget\"/d' | sed '/Plugins\[\] = \"Feedback\"/d' > ./bluezone/configtweaks/config.ini.php" >> fetchConfig.sh
+      echo -e "cf files ${IDS_PROJECT_NAME} /app/htdocs/piwik/config/config.ini.php | sed '/Plugins\[\] = \"ExampleAPI\"/d' | sed '/Plugins\[\] = \"ExamplePlugin\"/d' | sed '/Plugins\[\] = \"ExampleRssWidget\"/d' | sed '/Plugins\[\] = \"Feedback\"/d' > ./bluezone/configtweaks/config.ini.php" >> fetchConfig.sh
       echo -e "sed -i -e '1,3d' ./bluezone/configtweaks/config.ini.php" >> fetchConfig.sh
       chmod +x fetchConfig.sh
       echo -e "${present} ${beers}${Green}  Way to go! Your Piwik Assembly present is ready!"
