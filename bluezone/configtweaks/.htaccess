@@ -165,7 +165,7 @@ RewriteRule ^(index\.php|piwik\.(php|js))?$ - [L]
 RewriteRule ^js(/(index\.php|piwik\.js)?)?$ - [L]
 
 ## Allow limited access for certain Piwik system directories with client-accessible content
-RewriteRule ^(libs|plugins|themes|misc)/([^/]+/)*([^/.]+\.)+(jp(e?g|2)?|png|gif|ttf|bmp|css|js|swf|html?|pdf|svg|ico)$ - [L]
+RewriteRule ^(libs|plugins|themes|misc)/([^/]+/)*([^/.]+\.)+(jp(e?g|2)?|gif|ico|png|bmp|svg|js|css|htm|html|swf|mp3|mp4|wav|ogg|avi|ttf|eot|woff|woff2|json|pdf)$ - [L]
 
 ## Disallow access to all other (works, as only resources explicitly allowed above are accessed, no SEO pseudo directories)
 RewriteRule .* - [F]
