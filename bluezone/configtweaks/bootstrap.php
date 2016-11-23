@@ -54,7 +54,7 @@ if (isset($services_json)) {
   
     if (isset($services_json["compose-for-redis"][0]["credentials"])) {
         $redis_config = $services_json["compose-for-redis"][0]["credentials"];
-        uri = parse_url($redis_config["uri"])
+        uri = parse_url($redis_config["uri"]);
         $_ENV["REDISHOSTNAME"] = uri['host'];
         $_ENV["REDISPASSWORD"] = uri["pass"];
         $_ENV["REDISPORT"] = uri["port"];
