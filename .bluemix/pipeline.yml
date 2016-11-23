@@ -233,7 +233,17 @@ stages:
         n=0
         until [ $n -ge 5 ]
         do
-           cf cs rediscloud 30mb piwikredis > /dev/null 2>&1 && break
+           result=$(cf cs rediscloud 30mb piwikredis) && break
+           rc=$?;
+           if [[ $rc != 0 ]]; then 
+             if [[ $result == *"single free resource"* ]]; then
+               echo -e "${crossbones}${Red} ${result##*:}" | rev | cut -c 3- | rev
+               echo -e "${no_color}"
+               echo -e "${eyes}${Yellow}  Warning: Shifting pre-creation service to lowest tier compose.io plan (Standard). If your Bluemix account is NOT a trial account, you may also consider manually creating a RedisCloud 100mb plan and binding it to your Piwik application.${no_color}"
+               cf cs compose-for-redis Standard piwikredis > /dev/null 2>&1 && break
+             fi
+             break
+           fi
            n=$[$n+1]
            sleep 15
         done
@@ -250,7 +260,7 @@ stages:
       fi
       echo -e "${tools}${Yellow}  Sendgrid detection routine ...${no_color}" > /dev/null 2>&1
       if [ -n "$(cf s|grep sendgrid|cut -d" " -f1-1)" ] && [ "$(cf s|grep sendgrid|cut -d" " -f1-1)" != "sendmail" ]; then
-        echo -e "${eyes}${Yellow}   Detected existing sendgrid service ${existingSendgrid} within target space${no_color}"
+        echo -e "${eyes}${Yellow}  Detected existing sendgrid service ${existingSendgrid} within target space${no_color}"
         echo -e "${tools}${Yellow}    Updating manifest.yml file to match target space sendgrid service${no_color}"
         sed -e "s/sendmail/$(cf s|grep sendgrid|cut -d" " -f1-1)/g" ./manifest.yml > manifest.new
         rm manifest.yml
