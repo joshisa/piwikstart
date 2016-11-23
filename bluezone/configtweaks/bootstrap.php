@@ -51,6 +51,14 @@ if (isset($services_json)) {
         $_ENV["REDISPASSWORD"] = $redis_config["password"];
         $_ENV["REDISPORT"] = $redis_config["port"];
     }
+  
+    if (isset($services_json["compose-for-redis"][0]["credentials"])) {
+        $redis_config = $services_json["compose-for-redis"][0]["credentials"];
+        uri = parse_url($redis_config["uri"])
+        $_ENV["REDISHOSTNAME"] = uri['host'];
+        $_ENV["REDISPASSWORD"] = uri["pass"];
+        $_ENV["REDISPORT"] = uri["port"];
+    }
 
     if (isset($services_json["sendgrid"][0]["credentials"])) {
         $sendgrid_config = $services_json["sendgrid"][0]["credentials"];
