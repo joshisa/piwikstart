@@ -209,25 +209,27 @@ stages:
       ##########
       # Colors - Lets have some fun ##
       ##########
-      Green='\e[0;32m'
-      Red='\e[0;31m'
-      Yellow='\e[0;33m'
-      Cyan='\e[0;36m'
-      no_color='\e[0m' # No Color
+      Green='\x1B[0;32m'
+      Red='\x1B[0;31m'
+      Yellow='\x1B[0;33m'
+      Cyan='\x1B[0;36m'
+      no_color='\x1B[0m' # No Color
       beer='\xF0\x9f\x8d\xba'
       delivery='\xF0\x9F\x9A\x9A'
       beers='\xF0\x9F\x8D\xBB'
       eyes='\xF0\x9F\x91\x80'
       cloud='\xE2\x98\x81'
+      crossbones='\xE2\x98\xA0'
       litter='\xF0\x9F\x9A\xAE'
       fail='\xE2\x9B\x94'
       harpoons='\xE2\x87\x8C'
       tools='\xE2\x9A\x92'
       present='\xF0\x9F\x8E\x81'
+      hourglass='\xE2\x8F\xB3'
       #############
       # http://serverfault.com/questions/7503/how-to-determine-if-a-bash-variable-is-empty#answer-382740
-      if [ -z $(cf s|grep piwikredis|cut -d" " -f1-1) ]; then
-        echo -e "${tools}${Yellow}  Pre-creating RedisCloud Service named [${Cyan}piwikredis${Yellow}]${no_color}"
+      if [ -z "$(cf s|grep piwikredis|cut -d" " -f1-1)" ]; then
+        echo -e "${tools}${Yellow}  Pre-creating RedisCloud Service named ${Cyan}piwikredis${Yellow}${no_color}"
         n=0
         until [ $n -ge 5 ]
         do
@@ -236,8 +238,8 @@ stages:
            sleep 15
         done
       fi
-      if [ -z $(cf s|grep piwikdb|cut -d" " -f1-1) ]; then
-        echo -e "${tools}${Yellow}  Pre-creating ClearDB MySQL Service named [${Cyan}piwikdb${Yellow}]${no_color}"
+      if [ -z "$(cf s|grep piwikdb|cut -d" " -f1-1)" ]; then
+        echo -e "${tools}${Yellow}  Pre-creating ClearDB MySQL Service named ${Cyan}piwikdb${Yellow}${no_color}"
         q=0
         until [ $q -ge 5 ]
         do
@@ -247,18 +249,18 @@ stages:
         done
       fi
       echo -e "${tools}${Yellow}  Sendgrid detection routine ...${no_color}" > /dev/null 2>&1
-      if [ -n $(cf s|grep sendgrid|cut -d" " -f1-1) ] && [ $(cf s|grep sendgrid|cut -d" " -f1-1) != "sendmail" ]; then
+      if [ -n "$(cf s|grep sendgrid|cut -d" " -f1-1)" ] && [ "$(cf s|grep sendgrid|cut -d" " -f1-1)" != "sendmail" ]; then
         echo -e "${eyes}${Yellow}   Detected existing sendgrid service ${existingSendgrid} within target space${no_color}"
         echo -e "${tools}${Yellow}    Updating manifest.yml file to match target space sendgrid service${no_color}"
         sed -e "s/sendmail/$(cf s|grep sendgrid|cut -d" " -f1-1)/g" ./manifest.yml > manifest.new
         rm manifest.yml
         mv manifest.new manifest.yml
       else
-        echo -e "${tools}${Yellow}    Pre-creating Sendgrid Service named [${Cyan}sendmail${Yellow}]${no_color}"
+        echo -e "${tools}${Yellow}    Pre-creating Sendgrid Service named ${Cyan}sendmail${Yellow}${no_color}"
         t=0
         until [ $t -ge 5 ]
         do
-           cf cs sendgrid free sendmail > /dev/null 2>&1 && break
+           cf cs sendgrid bronze sendmail > /dev/null 2>&1 && break
            t=$[$t+1]
            sleep 15
         done
