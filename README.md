@@ -1,4 +1,5 @@
 [![Deploy to Bluemix](https://bluemix.net/deploy/button_x2.png)](https://bluemix.net/deploy?repository=https://github.com/joshisa/piwikstart)
+[![Create Toolchain](https://console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://console.ng.bluemix.net/devops/setup/deploy?repository=https://github.com/joshisa/piwikstart)
 ###Piwik::Self-Assembly
 <i>noun</i>
  1. The spontaneous formation of a body in a medium containing the appropriate components
