@@ -138,7 +138,6 @@ stages:
       echo -e "${tools}${Yellow}    Setting up Twilio support ...${no_color}"
       mv ./bluezone/twilio-php ./bluezone/twilio-php-master
       mv ./bluezone/twilio-php-master ./htdocs/piwik/libs
-      mv ./bluezone/apptweaks/SMSProvider.php ./htdocs/piwik/plugins/MobileMessaging
       mv ./bluezone/apptweaks/Twilio.php ./htdocs/piwik/plugins/MobileMessaging/SMSProvider
       
       # Organize the artifact structure to be CF PHP Buildpack friendly
