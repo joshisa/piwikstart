@@ -89,7 +89,7 @@ stages:
       unzip -o ./bluezone/FlagCounter.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
       
       echo -e "${harpoons}${Cyan}      Installing PerformanceInfo ...${no_color}"
-      wget https://plugins.piwik.org/api/2.0/plugins/PerformanceInfo/download/v0.3.1 -nv -O ./bluezone/PerformanceInfo.zip
+      wget https://plugins.piwik.org/api/2.0/plugins/PerformanceInfo/download/0.3.1 -nv -O ./bluezone/PerformanceInfo.zip
       unzip -o ./bluezone/PerformanceInfo.zip -d ./htdocs/piwik/plugins > /dev/null 2>&1
       
       echo -e "${harpoons}${Cyan}      Installing PlatformsReport ...${no_color}"
