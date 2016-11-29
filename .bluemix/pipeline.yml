@@ -237,9 +237,10 @@ stages:
              if [[ $result == *"single free resource"* ]]; then
                echo -e "${crossbones}${Red} ${result##*:}" | rev | cut -c 3- | rev
                echo -e "${no_color}"
-               echo -e "${eyes}${Yellow}  Warning: Shifting pre-creation service to lowest tier compose.io plan (Standard). If your Bluemix account is NOT a trial account, you may also consider manually creating a RedisCloud 100mb plan and binding it to your Piwik application.${no_color}"
-               cf cs compose-for-redis Standard piwikredis > /dev/null 2>&1 && break
              fi
+             echo -e "${eyes}${Yellow}  Warning: Shifting pre-creation service to lowest tier compose.io plan (Standard). If your Bluemix account is NOT a trial account, you may also consider manually creating a RedisCloud 100mb plan and binding it to your Piwik application.${no_color}"
+             cf cs compose-for-redis Standard piwikredis > /dev/null 2>&1 && break
+             sleep 8m
              break
            fi
            n=$[$n+1]
@@ -266,7 +267,7 @@ stages:
       else
         echo -e "${tools}${Yellow}    Pre-creating Sendgrid Service named ${Cyan}sendmail${Yellow}${no_color}"
         t=0
-        until [ $t -ge 5 ]
+        until [ $t -ge 2 ]
         do
            cf cs sendgrid bronze sendmail > /dev/null 2>&1 && break
            t=$[$t+1]
